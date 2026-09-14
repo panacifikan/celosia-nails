@@ -1,0 +1,69 @@
+<div class="celosia-trust">
+  {% for block in section.blocks %}
+    <div class="celosia-trust__card" {{ block.shopify_attributes }}>
+      <p class="celosia-trust__title">{{ block.settings.title }}</p>
+      <p class="celosia-trust__body">{{ block.settings.body }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+{% stylesheet %}
+  .celosia-trust {
+    background: #241519;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 24px 20px 0;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-trust { grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 40px 48px 0; }
+  }
+  .celosia-trust__card {
+    background: rgba(251, 245, 242, 0.07);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-trust__card { border-radius: 18px; padding: 22px; }
+  }
+  .celosia-trust__title {
+    font-family: var(--font-body--family);
+    font-weight: 500;
+    font-size: 13px;
+    color: #FBF5F2;
+    margin: 0 0 4px;
+  }
+  .celosia-trust__body {
+    font-family: var(--font-body--family);
+    font-size: 11.5px;
+    color: #BBA4A6;
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Trust cards",
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Trust card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Celosia: Trust cards",
+      "blocks": [
+        { "type": "card", "settings": { "title": "Free express $120+", "body": "AU wide shipping" } },
+        { "type": "card", "settings": { "title": "14-day returns", "body": "On unopened sets" } },
+        { "type": "card", "settings": { "title": "Hand-finished in Melbourne", "body": "Every set, by hand" } },
+        { "type": "card", "settings": { "title": "Secure checkout", "body": "Encrypted payments" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

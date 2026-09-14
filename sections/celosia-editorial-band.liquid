@@ -1,0 +1,168 @@
+<div class="celosia-editorial">
+  <div class="celosia-editorial__media">
+    {% if section.settings.image %}
+      {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 55vw, 100vw', widths: '600,900,1200' }}
+    {% else %}
+      <img src="{{ 'celosia-editorial.png' | asset_url }}" loading="lazy" alt="">
+    {% endif %}
+    <div class="celosia-editorial__scrim"></div>
+    <div class="celosia-editorial__text">
+      <p class="celosia-editorial__heading">{{ section.settings.heading }}</p>
+      <p class="celosia-editorial__body">{{ section.settings.body }}</p>
+    </div>
+  </div>
+  <div class="celosia-editorial__panel">
+    <p class="celosia-editorial__eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="celosia-editorial__panel-heading">{{ section.settings.panel_heading }}</h2>
+    <p class="celosia-editorial__panel-body">{{ section.settings.panel_body }}</p>
+    <div class="celosia-editorial__buttons">
+      {% if section.settings.secondary_link != blank %}
+        <a href="{{ section.settings.secondary_link }}" class="celosia-btn celosia-btn--outline-dark">{{ section.settings.secondary_label }}</a>
+      {% endif %}
+      {% if section.settings.primary_link != blank %}
+        <a href="{{ section.settings.primary_link }}" class="celosia-btn celosia-btn--pink">{{ section.settings.primary_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .celosia-editorial {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-editorial {
+      grid-template-columns: 1.15fr 1fr;
+    }
+  }
+
+  .celosia-editorial__media {
+    position: relative;
+    min-height: 380px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-editorial__media { min-height: 520px; }
+  }
+  .celosia-editorial__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    position: absolute;
+    inset: 0;
+  }
+  .celosia-editorial__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(36, 21, 25, 0.86) 0%, transparent 46%);
+  }
+  .celosia-editorial__text {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 24px;
+    color: #FBF5F2;
+  }
+  .celosia-editorial__heading {
+    font-family: var(--font-heading--family);
+    font-size: 32px;
+    line-height: 1.05;
+    margin: 0 0 8px;
+  }
+  .celosia-editorial__body {
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    color: #F2D2D7;
+    margin: 0;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-editorial__text { display: none; }
+  }
+
+  .celosia-editorial__panel {
+    display: none;
+    background: #241519;
+    color: #FBF5F2;
+    padding: 76px 56px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-editorial__panel { display: flex; }
+  }
+  .celosia-editorial__eyebrow {
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #E3A7B1;
+    margin: 0 0 12px;
+  }
+  .celosia-editorial__panel-heading {
+    font-family: var(--font-heading--family);
+    font-size: 54px;
+    line-height: 1.02;
+    margin: 0 0 16px;
+  }
+  .celosia-editorial__panel-body {
+    font-family: var(--font-body--family);
+    font-size: 16px;
+    line-height: 1.7;
+    color: #BBA4A6;
+    margin: 0 0 28px;
+    max-width: 42ch;
+  }
+  .celosia-editorial__buttons {
+    display: flex;
+    gap: 12px;
+  }
+  .celosia-btn {
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .celosia-btn--outline-dark {
+    border: 1px solid rgba(251, 245, 242, 0.4);
+    color: #FBF5F2;
+  }
+  .celosia-btn--pink {
+    background: #F2D2D7;
+    color: #241519;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Editorial band",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "text", "id": "heading", "label": "Mobile overlay heading", "default": "A nail tech finishes every set by hand." },
+    { "type": "text", "id": "body", "label": "Mobile overlay body" },
+    { "type": "text", "id": "eyebrow", "label": "Desktop eyebrow", "default": "The studio" },
+    { "type": "text", "id": "panel_heading", "label": "Desktop panel heading", "default": "A nail tech finishes every set by hand." },
+    { "type": "textarea", "id": "panel_body", "label": "Desktop panel body" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "Our story" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary button link" },
+    { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Shop the range" },
+    { "type": "url", "id": "primary_link", "label": "Primary button link" }
+  ],
+  "presets": [
+    {
+      "name": "Celosia: Editorial band",
+      "settings": {
+        "body": "Every set is hand-finished before it ships.",
+        "panel_body": "Each design is painted, detailed and quality-checked by hand before it leaves Melbourne. It is the same care you would get from a salon, just packed into a box and sent to your door."
+      }
+    }
+  ]
+}
+{% endschema %}

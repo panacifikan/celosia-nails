@@ -1,0 +1,68 @@
+<div class="celosia-sizing-table" {{ block.shopify_attributes }}>
+  <div class="celosia-sizing-table__row celosia-sizing-table__row--head">
+    <span>Size</span>
+    <span>Thumb width</span>
+  </div>
+  <div class="celosia-sizing-table__row">
+    <span>Extra small</span>
+    <span>{{ block.settings.xs_range | default: 'TBC' }}</span>
+  </div>
+  <div class="celosia-sizing-table__row">
+    <span>Small</span>
+    <span>{{ block.settings.s_range | default: 'TBC' }}</span>
+  </div>
+  <div class="celosia-sizing-table__row">
+    <span>Medium</span>
+    <span>{{ block.settings.m_range | default: 'TBC' }}</span>
+  </div>
+  <div class="celosia-sizing-table__row">
+    <span>Large</span>
+    <span>{{ block.settings.l_range | default: 'TBC' }}</span>
+  </div>
+  {% unless block.settings.xs_range != blank and block.settings.s_range != blank and block.settings.m_range != blank and block.settings.l_range != blank %}
+    <p class="celosia-sizing-table__note">Exact thumb-width ranges are being finalised — for now, use the size you'd normally choose in a salon, or get in touch and we'll help you pick.</p>
+  {% endunless %}
+</div>
+
+{% stylesheet %}
+  .celosia-sizing-table {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgba(36, 21, 25, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+  .celosia-sizing-table__row {
+    display: flex;
+    justify-content: space-between;
+    background: #FBF5F2;
+    padding: 10px 14px;
+    font-family: var(--font-body--family);
+    font-size: 13.5px;
+  }
+  .celosia-sizing-table__row--head {
+    font-weight: 500;
+    background: #F6E3E4;
+  }
+  .celosia-sizing-table__note {
+    font-family: var(--font-body--family);
+    font-size: 12.5px;
+    color: var(--color-foreground);
+    margin: 10px 2px 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Sizing table",
+  "settings": [
+    { "type": "header", "content": "Leave blank until real measurements are confirmed" },
+    { "type": "text", "id": "xs_range", "label": "Extra small (mm)" },
+    { "type": "text", "id": "s_range", "label": "Small (mm)" },
+    { "type": "text", "id": "m_range", "label": "Medium (mm)" },
+    { "type": "text", "id": "l_range", "label": "Large (mm)" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,19 @@
+{% liquid
+  assign intro = closest.product.description | split: '<h3>' | first
+%}
+<div class="celosia-product-intro" {{ block.shopify_attributes }}>{{ intro }}</div>
+
+{% stylesheet %}
+  .celosia-product-intro {
+    font-family: var(--font-body--family);
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+  .celosia-product-intro p { margin: 0 0 10px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Product intro"
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--page-width color-{{ section.settings.color_scheme }} spacing-style celosia-hands"
+  style="{% render 'spacing-style', settings: section.settings %}">
+  <p class="celosia-hands__label">{{ section.settings.label }}</p>
+  <div class="celosia-hands__pair">
+    <div class="celosia-hands__item">
+      {% if section.settings.image_left %}
+        {{ section.settings.image_left | image_url: width: 500 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 24vw, 46vw', widths: '250,375,500' }}
+      {% else %}
+        <img src="{{ 'celosia-step3-wear.png' | asset_url }}" loading="lazy" alt="">
+      {% endif %}
+    </div>
+    <div class="celosia-hands__item">
+      {% if section.settings.image_right %}
+        {{ section.settings.image_right | image_url: width: 500 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 24vw, 46vw', widths: '250,375,500' }}
+      {% else %}
+        <img src="{{ 'celosia-ugc6.png' | asset_url }}" loading="lazy" alt="">
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .celosia-hands__label {
+    font-family: var(--font-body--family);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    margin: 0 0 10px;
+  }
+  .celosia-hands__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .celosia-hands__item {
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+  }
+  .celosia-hands__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: On real hands",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "On real hands" },
+    { "type": "image_picker", "id": "image_left", "label": "Left image" },
+    { "type": "image_picker", "id": "image_right", "label": "Right image" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 24 }
+  ],
+  "presets": [{ "name": "Celosia: On real hands" }]
+}
+{% endschema %}

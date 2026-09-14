@@ -1,0 +1,202 @@
+{% liquid
+  assign heading = section.settings.heading
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--page-width color-{{ section.settings.color_scheme }} spacing-style celosia-how-it-works"
+  style="{% render 'spacing-style', settings: section.settings %}">
+  <h2 class="celosia-how-it-works__heading">{{ heading }}</h2>
+
+  <div class="celosia-how-it-works__grid">
+    {% for block in section.blocks %}
+      <div class="celosia-how-it-works__step" {{ block.shopify_attributes }}>
+        <div class="celosia-how-it-works__photo">
+          {% if block.settings.image %}
+            {{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 33vw, 92vw', widths: '184,368,500' }}
+          {% elsif block.settings.fallback_asset != blank %}
+            <img src="{{ block.settings.fallback_asset | asset_url }}" loading="lazy" alt="">
+          {% endif %}
+          <span class="celosia-how-it-works__numeral">{{ forloop.index }}</span>
+        </div>
+        <p class="celosia-how-it-works__title">{{ block.settings.title }}</p>
+        <p class="celosia-how-it-works__body">{{ block.settings.body }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .celosia-how-it-works__heading {
+    font-family: var(--font-heading--family);
+    font-style: var(--font-heading--style);
+    font-size: 30px;
+    line-height: 1;
+    text-align: center;
+    margin: 0 0 26px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-how-it-works__heading {
+      font-size: 52px;
+    }
+  }
+
+  .celosia-how-it-works__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-how-it-works__grid {
+      gap: 20px;
+    }
+  }
+
+  .celosia-how-it-works__photo {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-how-it-works__photo {
+      aspect-ratio: auto;
+      height: 250px;
+    }
+  }
+  .celosia-how-it-works__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .celosia-how-it-works__numeral {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #8E1F2B;
+    color: #FBF5F2;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-how-it-works__numeral {
+      top: 14px;
+      left: 14px;
+      width: 34px;
+      height: 34px;
+      font-size: 15px;
+    }
+  }
+
+  .celosia-how-it-works__title {
+    font-family: var(--font-body--family);
+    font-weight: 500;
+    font-size: 14px;
+    margin: 10px 0 4px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-how-it-works__title {
+      font-size: 18px;
+      margin-top: 16px;
+    }
+  }
+
+  .celosia-how-it-works__body {
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-how-it-works__body {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: How it works",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Three steps, ten minutes"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo (overrides default)" },
+        { "type": "text", "id": "fallback_asset", "label": "Default asset filename" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Celosia: How it works",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": { "title": "Order your set", "body": "Choose your design and size. Every set ships in one to two business days.", "fallback_asset": "celosia-step1-prep.png" }
+        },
+        {
+          "type": "step",
+          "settings": { "title": "Size, press, hold", "body": "Prep your nails, press each one on, hold for fifteen seconds.", "fallback_asset": "celosia-step2-press.png" }
+        },
+        {
+          "type": "step",
+          "settings": { "title": "Wear up to two weeks", "body": "Gel-grade finish that holds through washing up, gym, and everything between.", "fallback_asset": "celosia-step3-wear.png" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

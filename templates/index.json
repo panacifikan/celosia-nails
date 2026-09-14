@@ -1,0 +1,227 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "celosia_hero": {
+      "type": "celosia-hero",
+      "settings": {
+        "eyebrow": "Designed in Australia",
+        "headline": "Salon nails,",
+        "headline_italic": "on your time.",
+        "body": "Hand-finished press-on sets, ready in minutes and built to last up to two weeks.",
+        "primary_label": "Shop all designs",
+        "primary_link": "shopify://collections/all",
+        "secondary_label": "Sizing",
+        "secondary_link": "shopify://pages/sizing",
+        "hero_product": "blushing-royalty",
+        "secondary_product": "icy-princess",
+        "tertiary_product": "statement",
+        "color_scheme": "scheme-2"
+      }
+    },
+    "celosia_marquee": {
+      "type": "marquee",
+      "blocks": {
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sizes XS to L &middot; Gel-grade finish &middot; Reusable &middot; Cruelty free</p>",
+            "type_preset": "h6",
+            "font": "var(--font-body--family)",
+            "font_size": "0.6875rem",
+            "letter_spacing": "0.2em",
+            "case": "uppercase",
+            "color": "#F2D2D7"
+          }
+        }
+      },
+      "block_order": [
+        "text_1"
+      ],
+      "settings": {
+        "movement_direction": "normal",
+        "color_scheme": "scheme-5",
+        "padding-block-start": 12,
+        "padding-block-end": 12,
+        "gap_between_elements": 48
+      }
+    },
+    "celosia_how_it_works": {
+      "type": "celosia-how-it-works",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "fallback_asset": "celosia-step1-prep.png",
+            "title": "Order your set",
+            "body": "Choose your design and size. Every set ships in one to two business days."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "fallback_asset": "celosia-step2-press.png",
+            "title": "Size, press, hold",
+            "body": "Prep your nails, press each one on, hold for fifteen seconds."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "fallback_asset": "celosia-step3-wear.png",
+            "title": "Wear up to two weeks",
+            "body": "Gel-grade finish that holds through washing up, gym, and everything between."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "settings": {}
+    },
+    "celosia_showcase": {
+      "type": "celosia-product-showcase",
+      "settings": {
+        "collection": "all",
+        "vibe_heading": "Shop by vibe",
+        "vibe_subheading": "Tap a mood, the grid below follows.",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "celosia_editorial": {
+      "type": "celosia-editorial-band",
+      "settings": {
+        "heading": "A nail tech finishes every set by hand.",
+        "body": "Every set is hand-finished before it ships.",
+        "eyebrow": "The studio",
+        "panel_heading": "A nail tech finishes every set by hand.",
+        "panel_body": "Each design is painted, detailed and quality-checked by hand before it leaves Melbourne. It is the same care you would get from a salon, just packed into a box and sent to your door.",
+        "secondary_label": "Our story",
+        "secondary_link": "shopify://pages/our-story",
+        "primary_label": "Shop the range",
+        "primary_link": "shopify://collections/all"
+      }
+    },
+    "celosia_social_proof": {
+      "type": "celosia-social-proof",
+      "blocks": {
+        "bar_5": {
+          "type": "rating_bar",
+          "settings": {
+            "label": "5 stars",
+            "percent": 92
+          }
+        },
+        "bar_4": {
+          "type": "rating_bar",
+          "settings": {
+            "label": "4 stars",
+            "percent": 6
+          }
+        },
+        "bar_3": {
+          "type": "rating_bar",
+          "settings": {
+            "label": "3 stars",
+            "percent": 2
+          }
+        },
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "quote": "Held up through a full week of dishes and the gym, no lifting.",
+            "fallback_avatar": "celosia-ugc1.png",
+            "name": "Jess T.",
+            "meta": "Blushing Royalty \u00b7 Melbourne"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "quote": "Ten minutes and they looked salon-done. Ordering the next design already.",
+            "fallback_avatar": "celosia-ugc4.png",
+            "name": "Priya N.",
+            "meta": "Icy Princess \u00b7 Sydney"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "quote": "Two weeks of wear exactly as promised, came off clean with the soak.",
+            "fallback_avatar": "celosia-ugc6.png",
+            "name": "Amelia R.",
+            "meta": "Statement \u00b7 Perth"
+          }
+        },
+        "ugc_1": {
+          "type": "ugc_image",
+          "settings": {
+            "fallback_asset": "celosia-ugc1.png"
+          }
+        },
+        "ugc_2": {
+          "type": "ugc_image",
+          "settings": {
+            "fallback_asset": "celosia-ugc2.png"
+          }
+        },
+        "ugc_3": {
+          "type": "ugc_image",
+          "settings": {
+            "fallback_asset": "celosia-ugc3.png"
+          }
+        },
+        "ugc_4": {
+          "type": "ugc_image",
+          "settings": {
+            "fallback_asset": "celosia-ugc4.png"
+          }
+        },
+        "ugc_5": {
+          "type": "ugc_image",
+          "settings": {
+            "fallback_asset": "celosia-ugc5.png"
+          }
+        },
+        "ugc_6": {
+          "type": "ugc_image",
+          "settings": {
+            "fallback_asset": "celosia-ugc6.png"
+          }
+        }
+      },
+      "block_order": [
+        "bar_5",
+        "bar_4",
+        "bar_3",
+        "review_1",
+        "review_2",
+        "review_3",
+        "ugc_1",
+        "ugc_2",
+        "ugc_3",
+        "ugc_4",
+        "ugc_5",
+        "ugc_6"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "celosia_hero",
+    "celosia_marquee",
+    "celosia_how_it_works",
+    "celosia_showcase",
+    "celosia_editorial",
+    "celosia_social_proof"
+  ]
+}

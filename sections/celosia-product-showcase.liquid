@@ -1,0 +1,421 @@
+{% liquid
+  assign collection = section.settings.collection
+  assign all_products = collection.products
+  assign bestseller = null
+  for product in all_products
+    if product.tags contains 'featured-hero'
+      assign bestseller = product
+      break
+    endif
+  endfor
+
+  assign vibes = ''
+  for product in all_products
+    for tag in product.tags
+      if tag contains 'vibe-'
+        assign vibes = vibes | append: tag | append: ','
+      endif
+    endfor
+  endfor
+  assign vibes = vibes | split: ',' | uniq
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--page-width color-{{ section.settings.color_scheme }} spacing-style celosia-showcase"
+  style="{% render 'spacing-style', settings: section.settings %}">
+
+  <div class="celosia-showcase__vibe-head">
+    <h2 class="celosia-showcase__vibe-heading">{{ section.settings.vibe_heading }}</h2>
+    <p class="celosia-showcase__vibe-sub">{{ section.settings.vibe_subheading }}</p>
+  </div>
+
+  <div class="celosia-showcase__vibe-strip" data-celosia-vibe-strip>
+    <button type="button" class="celosia-vibe-card is-active" data-vibe="all">
+      <span class="celosia-vibe-card__label">All</span>
+      <span class="celosia-vibe-card__count">{{ all_products.size }} designs</span>
+    </button>
+    {% for vibe_tag in vibes %}
+      {% assign vibe_label = vibe_tag | remove: 'vibe-' | replace: '-', ' ' | capitalize %}
+      {% assign vibe_count = 0 %}
+      {% for product in all_products %}
+        {% if product.tags contains vibe_tag %}
+          {% assign vibe_count = vibe_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      <button type="button" class="celosia-vibe-card" data-vibe="{{ vibe_tag }}">
+        {% for product in all_products %}
+          {% if product.tags contains vibe_tag %}
+            {{ product.featured_image | image_url: width: 224 | image_tag: loading: 'lazy', alt: '', sizes: '112px', widths: '112,224' }}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        <span class="celosia-vibe-card__label">{{ vibe_label }}</span>
+        <span class="celosia-vibe-card__count">{{ vibe_count }} designs</span>
+      </button>
+    {% endfor %}
+  </div>
+
+  {% if bestseller %}
+    <a href="{{ bestseller.url }}" class="celosia-bestseller-card" data-celosia-bestseller>
+      {{ bestseller.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 60vw, 92vw', widths: '450,700,900' }}
+      <span class="celosia-pill celosia-pill--bestseller">Bestseller</span>
+      {% if bestseller.tags contains 'label-low-stock' %}
+        <span class="celosia-pill celosia-pill--stock">Low stock</span>
+      {% endif %}
+      <div class="celosia-bestseller-card__footer">
+        <div>
+          <p class="celosia-bestseller-card__name">{{ bestseller.title }}</p>
+          <p class="celosia-bestseller-card__blurb">{{ bestseller.description | strip_html | truncate: 90 }}</p>
+        </div>
+        <div class="celosia-bestseller-card__buy">
+          <p class="celosia-bestseller-card__price">{{ bestseller.price | money }}</p>
+          <span class="celosia-bestseller-card__cta">Shop this design</span>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+
+  <div class="celosia-showcase__grid" data-celosia-grid>
+    {% for product in all_products %}
+      {% unless product == bestseller %}
+        {% assign vibe_tag_for_card = '' %}
+        {% for tag in product.tags %}
+          {% if tag contains 'vibe-' %}
+            {% assign vibe_tag_for_card = tag %}
+          {% endif %}
+        {% endfor %}
+        {% assign label_tag = '' %}
+        {% for tag in product.tags %}
+          {% if tag contains 'label-' %}
+            {% assign label_tag = tag | remove: 'label-' | replace: '-', ' ' | capitalize %}
+          {% endif %}
+        {% endfor %}
+        <a href="{{ product.url }}" class="celosia-product-card" data-vibe="{{ vibe_tag_for_card }}">
+          <div class="celosia-product-card__media">
+            {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 22vw, 46vw', widths: '250,375,500' }}
+            {% if label_tag != '' %}
+              <span class="celosia-tag-pill">{{ label_tag }}</span>
+            {% endif %}
+            <span class="celosia-quick-add">Quick add · {{ product.price | money }}</span>
+          </div>
+          <p class="celosia-product-card__name">{{ product.title }}</p>
+          <div class="celosia-product-card__meta">
+            <span>{{ vibe_tag_for_card | remove: 'vibe-' | replace: '-', ' ' | capitalize }}</span>
+            <span class="celosia-product-card__price">{{ product.price | money }}</span>
+          </div>
+        </a>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>
+
+<script src="{{ 'celosia-shop-by-vibe.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  .celosia-showcase__vibe-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .celosia-showcase__vibe-heading {
+    font-family: var(--font-heading--family);
+    font-size: 30px;
+    margin: 0;
+  }
+  @media screen and (min-width: 750px) { .celosia-showcase__vibe-heading { font-size: 52px; } }
+  .celosia-showcase__vibe-sub {
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .celosia-showcase__vibe-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 24px;
+    scrollbar-width: none;
+  }
+  .celosia-showcase__vibe-strip::-webkit-scrollbar { display: none; }
+
+  .celosia-vibe-card {
+    flex: 0 0 auto;
+    width: 112px;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--font-body--family);
+    border-radius: 14px;
+    box-shadow: inset 0 0 0 1px rgba(36, 21, 25, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-vibe-card { width: 210px; }
+    .celosia-vibe-card:hover { transform: translateY(-4px); }
+  }
+  .celosia-vibe-card.is-active {
+    box-shadow: 0 0 0 2px #8E1F2B;
+  }
+  .celosia-vibe-card img {
+    width: 100%;
+    height: 96px;
+    object-fit: cover;
+    display: block;
+  }
+  @media screen and (min-width: 750px) { .celosia-vibe-card img { height: 210px; } }
+  .celosia-vibe-card__label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 8px 8px 0;
+    color: var(--color-foreground-heading);
+  }
+  .celosia-vibe-card__count {
+    display: block;
+    font-size: 11px;
+    color: var(--color-foreground);
+    padding: 2px 8px 8px;
+  }
+
+  .celosia-bestseller-card {
+    display: block;
+    position: relative;
+    background: #FFFFFF;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 0 1px rgba(36, 21, 25, 0.09);
+  }
+  .celosia-bestseller-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+  }
+  .celosia-pill {
+    position: absolute;
+    top: 12px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-weight: 500;
+  }
+  .celosia-pill--bestseller {
+    left: 12px;
+    background: #8E1F2B;
+    color: #FBF5F2;
+  }
+  .celosia-pill--stock {
+    left: 130px;
+    background: rgba(251, 245, 242, 0.85);
+    color: #241519;
+  }
+  .celosia-bestseller-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    padding: 16px;
+  }
+  .celosia-bestseller-card__name {
+    font-family: var(--font-heading--family);
+    font-size: 27px;
+    margin: 0 0 4px;
+  }
+  .celosia-bestseller-card__blurb {
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    color: var(--color-foreground);
+    margin: 0;
+    max-width: 40ch;
+  }
+  .celosia-bestseller-card__buy { text-align: right; flex-shrink: 0; }
+  .celosia-bestseller-card__price {
+    font-family: var(--font-body--family);
+    font-variant-numeric: tabular-nums;
+    color: #8E1F2B;
+    font-size: 20px;
+    margin: 0 0 6px;
+  }
+  .celosia-bestseller-card__cta {
+    display: inline-block;
+    background: #241519;
+    color: #FBF5F2;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    border-radius: 999px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-bestseller-card {
+      grid-column: span 2;
+      grid-row: span 2;
+      display: flex;
+      flex-direction: column;
+    }
+    .celosia-bestseller-card img { flex: 1; height: auto; min-height: 320px; }
+  }
+
+  .celosia-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-showcase__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .celosia-bestseller-card { order: -1; }
+  }
+
+  .celosia-product-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .celosia-product-card__media {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #FFFFFF;
+  }
+  .celosia-product-card__media img {
+    width: 100%;
+    height: 172px;
+    object-fit: cover;
+    display: block;
+  }
+  @media screen and (min-width: 750px) { .celosia-product-card__media img { height: 250px; } }
+
+  .celosia-tag-pill {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(251, 245, 242, 0.85);
+    color: #241519;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+  }
+
+  .celosia-quick-add {
+    position: absolute;
+    inset: auto 12px 12px;
+    background: #241519;
+    color: #FBF5F2;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  @media (hover: hover) {
+    .celosia-product-card:hover .celosia-quick-add { opacity: 1; }
+    .celosia-product-card:hover .celosia-product-card__media { box-shadow: 0 26px 54px -32px rgba(36, 21, 25, 0.5); }
+  }
+
+  .celosia-product-card__name {
+    font-family: var(--font-body--family);
+    font-weight: 500;
+    font-size: 13.5px;
+    margin: 10px 0 2px;
+  }
+  @media screen and (min-width: 750px) { .celosia-product-card__name { font-size: 16px; } }
+
+  .celosia-product-card__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-foreground);
+    font-family: var(--font-body--family);
+  }
+  .celosia-product-card__price {
+    color: #8E1F2B;
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-celosia-grid] .celosia-product-card[hidden],
+  [data-celosia-bestseller][hidden] {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Shop by vibe",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "vibe_heading",
+      "label": "Heading",
+      "default": "Shop by vibe"
+    },
+    {
+      "type": "text",
+      "id": "vibe_subheading",
+      "label": "Subheading",
+      "default": "Tap a mood, the grid below follows."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    }
+  ],
+  "presets": [
+    { "name": "Celosia: Shop by vibe" }
+  ]
+}
+{% endschema %}

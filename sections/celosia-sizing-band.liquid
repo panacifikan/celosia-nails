@@ -1,0 +1,57 @@
+<div class="celosia-sizing-band">
+  <div>
+    <h2 class="celosia-sizing-band__heading">{{ section.settings.heading }}</h2>
+    <p class="celosia-sizing-band__body">{{ section.settings.body }}</p>
+  </div>
+  {% if section.settings.link != blank %}
+    <a href="{{ section.settings.link }}" class="celosia-btn celosia-btn--outline-dark">{{ section.settings.link_label }}</a>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .celosia-sizing-band {
+    background: #241519;
+    color: #FBF5F2;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-sizing-band {
+      padding: 56px 48px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .celosia-sizing-band__heading {
+    font-family: var(--font-heading--family);
+    font-size: 30px;
+    margin: 0 0 8px;
+  }
+  @media screen and (min-width: 750px) { .celosia-sizing-band__heading { font-size: 42px; } }
+  .celosia-sizing-band__body {
+    font-family: var(--font-body--family);
+    font-size: 14px;
+    color: #BBA4A6;
+    margin: 0;
+    max-width: 46ch;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Sizing band",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Not sure of your size?" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Check the sizing guide in the product accordion before you order — it only takes a minute." },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Sizing guide" }
+  ],
+  "presets": [{ "name": "Celosia: Sizing band" }]
+}
+{% endschema %}

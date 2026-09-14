@@ -1,0 +1,232 @@
+{% liquid
+  assign hero_product = section.settings.hero_product
+  assign secondary_product = section.settings.secondary_product
+  assign tertiary_product = section.settings.tertiary_product
+%}
+
+<div class="celosia-hero color-{{ section.settings.color_scheme }}">
+  <div class="celosia-hero__inner">
+    <div class="celosia-hero__copy">
+      <p class="celosia-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 class="celosia-hero__headline">{{ section.settings.headline }}<br><em>{{ section.settings.headline_italic }}</em></h1>
+      <p class="celosia-hero__body">{{ section.settings.body }}</p>
+      <div class="celosia-hero__proof">
+        <span>★★★★★ 4.9 average rating</span>
+        <span>Sizes XS to L</span>
+        <span>Reusable</span>
+      </div>
+      <div class="celosia-hero__ctas">
+        <a href="{{ section.settings.primary_link | default: '/collections/all' }}" class="celosia-btn celosia-btn--cherry">{{ section.settings.primary_label }}</a>
+        <a href="{{ section.settings.secondary_link }}" class="celosia-btn celosia-btn--outline">{{ section.settings.secondary_label }}</a>
+      </div>
+    </div>
+    <div class="celosia-hero__stage">
+      <span class="celosia-hero__circle"></span>
+      {% if tertiary_product %}
+        <div class="celosia-hero__photo celosia-hero__photo--tertiary">
+          {{ tertiary_product.featured_image | image_url: width: 460 | image_tag: loading: 'lazy', sizes: '230px', widths: '230,460' }}
+        </div>
+      {% endif %}
+      {% if secondary_product %}
+        <div class="celosia-hero__photo celosia-hero__photo--secondary">
+          {{ secondary_product.featured_image | image_url: width: 460 | image_tag: loading: 'lazy', sizes: '236px', widths: '236,460' }}
+        </div>
+      {% endif %}
+      {% if hero_product %}
+        <div class="celosia-hero__photo celosia-hero__photo--hero">
+          {{ hero_product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 400px, 236px', widths: '236,400,800' }}
+        </div>
+        <span class="celosia-hero__pill celosia-hero__pill--wear">Up to 2 weeks wear</span>
+        <span class="celosia-hero__pill celosia-hero__pill--bestseller">Bestseller · {{ hero_product.title }}</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .celosia-hero {
+    background: linear-gradient(180deg, #F6E3E4 0%, #F6E3E4 62%, #FBF5F2 62%, #FBF5F2 100%);
+    padding: 28px 18px 34px;
+  }
+  .celosia-hero__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .celosia-hero__eyebrow {
+    font-family: var(--font-body--family);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8E1F2B;
+    margin: 0 0 8px;
+  }
+  .celosia-hero__headline {
+    font-family: var(--font-heading--family);
+    font-size: 46px;
+    line-height: 0.94;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    max-width: 60%;
+  }
+  .celosia-hero__headline em { font-style: italic; }
+  .celosia-hero__body {
+    font-family: var(--font-body--family);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 220px 0 16px 0;
+  }
+  .celosia-hero__proof {
+    display: none;
+    gap: 20px;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .celosia-hero__ctas {
+    display: flex;
+    gap: 10px;
+  }
+  .celosia-btn--cherry {
+    flex: 1;
+    text-align: center;
+    background: #8E1F2B;
+    color: #FBF5F2;
+    padding: 15px 20px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .celosia-btn--outline {
+    text-align: center;
+    border: 1px solid rgba(36, 21, 25, 0.25);
+    color: #241519;
+    padding: 15px 20px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .celosia-hero__stage {
+    position: absolute;
+    top: -8px;
+    right: 0;
+    width: 100%;
+    height: 330px;
+    pointer-events: none;
+  }
+  .celosia-hero__circle { display: none; }
+  .celosia-hero__photo { position: absolute; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 70px -40px rgba(36,21,25,0.5); }
+  .celosia-hero__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .celosia-hero__photo--tertiary { display: none; }
+  .celosia-hero__photo--secondary {
+    top: 34px; right: 0; width: 132px; height: 176px; transform: rotate(6deg); border-radius: 14px;
+  }
+  .celosia-hero__photo--hero {
+    top: 76px; left: 6px; width: 236px; height: 252px; transform: rotate(-3deg); border-radius: 18px;
+    box-shadow: 0 44px 90px -36px rgba(36,21,25,0.6);
+  }
+  .celosia-hero__pill {
+    position: absolute;
+    font-family: var(--font-body--family);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .celosia-hero__pill--wear {
+    bottom: 6px; right: 8px;
+    background: #FBF5F2;
+    color: #241519;
+  }
+  .celosia-hero__pill--bestseller { display: none; }
+
+  @media screen and (min-width: 750px) {
+    .celosia-hero { padding: 76px 48px 84px; }
+    .celosia-hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .celosia-hero__headline { font-size: 96px; line-height: 0.9; max-width: 100%; }
+    .celosia-hero__body { margin: 0 0 24px; }
+    .celosia-hero__proof { display: flex; }
+    .celosia-hero__ctas { display: flex; }
+    .celosia-btn--cherry, .celosia-btn--outline { flex: none; padding: 18px 34px; }
+
+    .celosia-hero__stage {
+      position: relative;
+      top: 0; right: 0;
+      height: 560px;
+      grid-column: 2;
+    }
+    .celosia-hero__circle {
+      display: block;
+      position: absolute;
+      top: -120px; right: -80px;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      background: rgba(251, 245, 242, 0.5);
+    }
+    .celosia-hero__photo--tertiary {
+      display: block;
+      bottom: 40px; left: 40px;
+      width: 230px; height: 290px;
+      transform: rotate(5deg);
+    }
+    .celosia-hero__photo--secondary {
+      top: 0; left: 0; right: auto;
+      width: 250px; height: 320px;
+      transform: rotate(-7deg);
+    }
+    .celosia-hero__photo--hero {
+      top: 40px; right: 0; left: auto;
+      width: 400px; height: 440px;
+      transform: rotate(2deg);
+    }
+    .celosia-hero__pill--wear {
+      bottom: auto; top: 20px; right: auto; left: 40px;
+      background: #241519; color: #F2D2D7;
+    }
+    .celosia-hero__pill--bestseller {
+      display: block;
+      bottom: 20px; left: 260px;
+      background: #FBF5F2; color: #241519;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Hero",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Designed in Australia" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Salon nails," },
+    { "type": "text", "id": "headline_italic", "label": "Headline (italic line)", "default": "on your time." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Hand-finished press-on sets, ready in minutes and built to last up to two weeks." },
+    { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Shop all designs" },
+    { "type": "url", "id": "primary_link", "label": "Primary button link" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "Sizing" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary button link" },
+    { "type": "product", "id": "hero_product", "label": "Hero photo (bestseller)" },
+    { "type": "product", "id": "secondary_product", "label": "Secondary photo" },
+    { "type": "product", "id": "tertiary_product", "label": "Desktop third photo" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" }
+  ],
+  "presets": [{ "name": "Celosia: Hero" }]
+}
+{% endschema %}

@@ -1,0 +1,244 @@
+{% liquid
+  assign stars = '★★★★★'
+%}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--page-width color-{{ section.settings.color_scheme }} spacing-style celosia-social"
+  style="{% render 'spacing-style', settings: section.settings %}">
+
+  <div class="celosia-social__head">
+    <div>
+      <p class="celosia-social__rating-figure">Rated {{ section.settings.average_rating }}</p>
+      <p class="celosia-social__rating-label">Verified · reviews collected after wear</p>
+    </div>
+    {% if section.settings.show_bars %}
+      <div class="celosia-social__bars">
+        {% for block in section.blocks %}
+          {% if block.type == 'rating_bar' %}
+            <div class="celosia-social__bar-row" {{ block.shopify_attributes }}>
+              <span>{{ block.settings.label }}</span>
+              <span class="celosia-social__bar-track">
+                <span class="celosia-social__bar-fill" style="width: {{ block.settings.percent }}%;"></span>
+              </span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="celosia-social__reviews">
+    {% for block in section.blocks %}
+      {% if block.type == 'review' %}
+        <div class="celosia-social__review-card" {{ block.shopify_attributes }}>
+          <p class="celosia-social__stars">{{ stars }}</p>
+          <p class="celosia-social__review-quote">&ldquo;{{ block.settings.quote }}&rdquo;</p>
+          <div class="celosia-social__review-person">
+            {% if block.settings.avatar %}
+              {{ block.settings.avatar | image_url: width: 72 | image_tag: loading: 'lazy', alt: block.settings.name, sizes: '36px', widths: '36,72' }}
+            {% elsif block.settings.fallback_avatar != blank %}
+              <img src="{{ block.settings.fallback_avatar | asset_url }}" loading="lazy" alt="{{ block.settings.name }}">
+            {% endif %}
+            <div>
+              <p class="celosia-social__review-name">{{ block.settings.name }}</p>
+              <p class="celosia-social__review-meta">{{ block.settings.meta }}</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if section.settings.show_ugc %}
+    <p class="celosia-social__ugc-label">#CelosiaOnMe · tag us to be featured</p>
+    <div class="celosia-social__ugc-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'ugc_image' %}
+          <div class="celosia-social__ugc-item" {{ block.shopify_attributes }}>
+            {% if block.settings.image %}
+              {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy', alt: '', sizes: '(min-width: 750px) 16vw, 33vw', widths: '150,300,400' }}
+            {% elsif block.settings.fallback_asset != blank %}
+              <img src="{{ block.settings.fallback_asset | asset_url }}" loading="lazy" alt="">
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .celosia-social__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .celosia-social__rating-figure {
+    font-family: var(--font-heading--family);
+    font-size: 30px;
+    margin: 0 0 4px;
+  }
+  @media screen and (min-width: 750px) { .celosia-social__rating-figure { font-size: 52px; } }
+  .celosia-social__rating-label {
+    font-family: var(--font-body--family);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .celosia-social__bars { display: flex; flex-direction: column; gap: 8px; min-width: 220px; }
+  .celosia-social__bar-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+  }
+  .celosia-social__bar-track {
+    display: block;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(36, 21, 25, 0.12);
+    overflow: hidden;
+  }
+  .celosia-social__bar-fill {
+    display: block;
+    height: 100%;
+    background: #8E1F2B;
+  }
+
+  .celosia-social__reviews {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-bottom: 26px;
+  }
+  .celosia-social__reviews::-webkit-scrollbar { display: none; }
+  .celosia-social__review-card {
+    flex: 0 0 246px;
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 20px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-social__review-card { flex: 1 1 0; border-radius: 20px; padding: 28px; }
+  }
+  .celosia-social__stars { color: #8E1F2B; margin: 0 0 8px; letter-spacing: 2px; }
+  .celosia-social__review-quote {
+    font-family: var(--font-body--family);
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 16px;
+  }
+  .celosia-social__review-person {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .celosia-social__review-person img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .celosia-social__review-name { font-size: 13px; font-weight: 500; margin: 0; }
+  .celosia-social__review-meta { font-size: 11px; color: var(--color-foreground); margin: 0; }
+
+  .celosia-social__ugc-label {
+    font-family: var(--font-body--family);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  .celosia-social__ugc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  @media screen and (min-width: 750px) {
+    .celosia-social__ugc-grid { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  }
+  .celosia-social__ugc-item {
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .celosia-social__ugc-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Celosia: Social proof",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "text", "id": "average_rating", "label": "Average rating (placeholder until review app is connected)", "default": "4.9" },
+    { "type": "checkbox", "id": "show_bars", "label": "Show rating bars", "default": true },
+    { "type": "checkbox", "id": "show_ugc", "label": "Show UGC grid", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 34 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 34 }
+  ],
+  "blocks": [
+    {
+      "type": "rating_bar",
+      "name": "Rating bar",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "5 stars" },
+        { "type": "range", "id": "percent", "label": "Percent", "min": 0, "max": 100, "step": 1, "default": 92 }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review (placeholder)",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "image_picker", "id": "avatar", "label": "Avatar (overrides default)" },
+        { "type": "text", "id": "fallback_avatar", "label": "Default avatar asset filename" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "meta", "label": "Meta (design · city)" }
+      ]
+    },
+    {
+      "type": "ugc_image",
+      "name": "UGC photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo (overrides default)" },
+        { "type": "text", "id": "fallback_asset", "label": "Default asset filename" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Celosia: Social proof",
+      "blocks": [
+        { "type": "rating_bar", "settings": { "label": "5 stars", "percent": 92 } },
+        { "type": "rating_bar", "settings": { "label": "4 stars", "percent": 6 } },
+        { "type": "rating_bar", "settings": { "label": "3 stars", "percent": 2 } },
+        { "type": "review", "settings": { "quote": "Held up through a full week of dishes and the gym, no lifting.", "name": "Jess T.", "meta": "Blushing Royalty · Melbourne", "fallback_avatar": "celosia-ugc1.png" } },
+        { "type": "review", "settings": { "quote": "Ten minutes and they looked salon-done. Ordering the next design already.", "name": "Priya N.", "meta": "Icy Princess · Sydney", "fallback_avatar": "celosia-ugc4.png" } },
+        { "type": "review", "settings": { "quote": "Two weeks of wear exactly as promised, came off clean with the soak.", "name": "Amelia R.", "meta": "Statement · Perth", "fallback_avatar": "celosia-ugc6.png" } },
+        { "type": "ugc_image", "settings": { "fallback_asset": "celosia-ugc1.png" } },
+        { "type": "ugc_image", "settings": { "fallback_asset": "celosia-ugc2.png" } },
+        { "type": "ugc_image", "settings": { "fallback_asset": "celosia-ugc3.png" } },
+        { "type": "ugc_image", "settings": { "fallback_asset": "celosia-ugc4.png" } },
+        { "type": "ugc_image", "settings": { "fallback_asset": "celosia-ugc5.png" } },
+        { "type": "ugc_image", "settings": { "fallback_asset": "celosia-ugc6.png" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
